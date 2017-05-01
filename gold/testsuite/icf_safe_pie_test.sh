@@ -71,6 +71,9 @@ arch_specific_safe_fold()
 
 arch_specific_safe_fold icf_safe_pie_test_1.stdout icf_safe_pie_test_2.stdout \
   icf_safe_pie_test.map "kept_func_1" "kept_func_2"
-check_fold   icf_safe_pie_test.map "_ZN1AD2Ev" "_ZN1AC2Ev"
+if grep -q _ZN1A[CD]2Ev icf_safe_pie_test_1.stdout
+then
+    check_fold   icf_safe_pie_test.map "_ZN1AD2Ev" "_ZN1AC2Ev"
+fi
 check_nofold icf_safe_pie_test_1.stdout "kept_func_3" "kept_func_1"
 check_nofold icf_safe_pie_test_1.stdout "kept_func_3" "kept_func_2"
