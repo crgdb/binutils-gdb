@@ -88,7 +88,7 @@ END {
 
 arch_specific_safe_fold()
 {
-    if grep -q -e "Intel 80386" -e "ARM" -e "PowerPC" $1;
+    if grep -q -e "Advanced Micro Devices X86-64" -e "Intel 80386" -e "ARM" -e "PowerPC" $1;
     then
       check_fold $2 $4 $5 $3
     else
@@ -103,3 +103,4 @@ arch_specific_safe_fold icf_safe_so_test_2.stdout icf_safe_so_test_1.stdout icf_
 arch_specific_safe_fold icf_safe_so_test_2.stdout icf_safe_so_test_1.stdout icf_safe_so_test.map "foo_hidden" "foo_static"
 arch_specific_safe_fold icf_safe_so_test_2.stdout icf_safe_so_test_1.stdout icf_safe_so_test.map "foo_internal" "foo_static"
 check_nofold icf_safe_so_test_1.stdout "foo_glob" "bar_glob"
+check_nofold icf_safe_so_test_1.stdout "bar_static" "bar_glob"
