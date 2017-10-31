@@ -3010,7 +3010,14 @@ incremental_test_2: two_file_test_1_v1_ndebug.o two_file_test_1_ndebug.o two_fil
 	$(CXXLINK) -Wl,--incremental-full,--incremental-patch=100 -Wl,-z,norelro -Bgcctestdir/ two_file_test_tmp_2.o two_file_test_1b_ndebug.o two_file_test_2_ndebug.o two_file_test_main_ndebug.o
 	@sleep 1
 	cp -f two_file_test_1_ndebug.o two_file_test_tmp_2.o
-	$(CXXLINK) -Wl,--incremental-update -Wl,-z,norelro -Bgcctestdir/ two_file_test_tmp_2.o two_file_test_1b_ndebug.o two_file_test_2_ndebug.o two_file_test_main_ndebug.o
+	$(CXXLINK) -Wl,--incremental-update -Wl,-z,norelro -Bgcctestdir/ two_file_test_tmp_2.o two_file_test_1b_ndebug.o two_file_test_2_ndebug.o two_file_test_main_ndebug.o; \
+	if [ $$? != 0 ]; then \
+	  cp -f two_file_test_1_v1_ndebug.o two_file_test_tmp_2.o; \
+	  $(CXXLINK) -Wl,--incremental-full,--incremental-patch=100 -Wl,-z,norelro -Bgcctestdir/ two_file_test_tmp_2.o two_file_test_1b_ndebug.o two_file_test_2_ndebug.o two_file_test_main_ndebug.o; \
+	  @sleep 1; \
+	  cp -f two_file_test_1_ndebug.o two_file_test_tmp_2.o; \
+	  $(CXXLINK) -Wl,--incremental-full -Wl,-z,norelro -Bgcctestdir/ two_file_test_tmp_2.o two_file_test_1b_ndebug.o two_file_test_2_ndebug.o two_file_test_main_ndebug.o; \
+	fi
 
 check_PROGRAMS += incremental_test_3
 MOSTLYCLEANFILES += two_file_test_tmp_3.o
